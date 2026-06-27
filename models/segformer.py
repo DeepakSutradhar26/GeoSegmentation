@@ -2,7 +2,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers import SegformerForSemanticSegmentation
 
-
 class SegFormerBinary(nn.Module):
     def __init__(self):
         super().__init__()

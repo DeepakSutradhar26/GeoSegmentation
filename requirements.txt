@@ -2,3 +2,6 @@ torch
 torch-geometric
 scikit-learn
 transformers
+kagglehub
+matplotlib
+seaborn

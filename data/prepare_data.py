@@ -1,6 +1,6 @@
 import os
 from sklearn.model_selection import train_test_split
-from torch_gemetric.loader import DataLoader
+from torch_geometric.loader import DataLoader
 
 import config
 from data.dataset import GeoDataset
