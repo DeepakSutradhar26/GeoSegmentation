@@ -5,3 +5,5 @@ transformers
 kagglehub
 matplotlib
 seaborn
+opencv-python
+geopandas

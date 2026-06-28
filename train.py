@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
@@ -11,7 +12,8 @@ from data.prepare_data import train_loader, val_loader
 
 def train_model(model : nn.Module):
     optimizer = Adam(
-        model.parameters, 
+        model.parameters(), 
+        lr=config.LEARNING_RATE,
         weight_decay=config.WEIGHT_DECAY
         )
     
@@ -19,6 +21,7 @@ def train_model(model : nn.Module):
 
     scaler = GradScaler('cuda')
 
+    best_val_loss = float('inf')
     all_train_losses = []
     all_val_losses = []
 
@@ -37,12 +40,12 @@ def train_model(model : nn.Module):
                 loss = criterion(preds.view(-1), y.view(-1))
 
             scaler.scale(loss).backward()
-            scaler.scale(optimizer)
+            scaler.step(optimizer)
             scaler.update()
 
-            train_loss += loss
+            train_loss += loss.item()
 
-        train_loss = train_loss / len(train_loader)
+        train_loss = train_loss / len(train_loader) if len(train_loader) > 0 else 0
         all_train_losses.append(train_loss)
 
         model.eval()
@@ -57,10 +60,15 @@ def train_model(model : nn.Module):
 
                 loss = criterion(preds.view(-1), y.view(-1))
 
-                val_loss += loss
+                val_loss += loss.item()
 
-        val_loss = val_loss / len(val_loader)
+        val_loss = val_loss / len(val_loader) if len(val_loader) > 0 else 0
         all_val_losses.append(val_loss)
+
+        if best_val_loss > val_loss:
+            best_val_loss = val_loss
+            os.makedirs('weights', exist_ok=True)
+            torch.save(model.state_dict(), 'weights/best_model.pt')
 
         print(f"Epoch {epoch+1}/{config.EPOCHS} | Train loss : {train_loss} | Val loss : {val_loss}")
 
@@ -73,6 +81,3 @@ def train_model(model : nn.Module):
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.show()
-
-
-            
