@@ -140,7 +140,7 @@ pip install -r requirements.txt
 Run
 
 ```bash
-python train.py
+python main.py
 ```
 
 The best model will be saved to
