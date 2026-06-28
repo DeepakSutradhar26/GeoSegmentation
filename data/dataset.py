@@ -2,7 +2,6 @@ import cv2
 import torch
 import numpy as np
 import geopandas as gpd
-import matplotlib.pyplot as plt
 from torch.utils.data import Dataset
 
 import config
