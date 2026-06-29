@@ -1,2 +1,5 @@
 /venv
 /ps
+**/__pycache__
+/outputs
+/weights

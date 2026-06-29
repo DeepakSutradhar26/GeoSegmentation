@@ -224,6 +224,13 @@ All dependencies are listed in
 requirements.txt
 ```
 
+Download weights from [Drive Link](https://drive.google.com/file/d/15oELv7y0YP6bHjNMmU7sHBXLtPuvQqwJ/view?usp=drive_link)
+
+```
+weights
+└──best_model.pt
+```
+
 Training can be reproduced using
 
 ```bash

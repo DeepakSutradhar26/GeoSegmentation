@@ -1,7 +1,9 @@
 torch
-torch-geometric
+torchvision
+torchaudio
+numpy
+transformers==5.0.0
 scikit-learn
-transformers
 kagglehub
 matplotlib
 seaborn
