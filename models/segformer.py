@@ -11,6 +11,7 @@ class SegFormerBinary(nn.Module):
             "nvidia/mit-b2",
             num_labels=2,
             ignore_mismatched_sizes=True,
+            use_safetensors=True
         )
 
         # Replace final layer: multi-class -> binary (1 output)

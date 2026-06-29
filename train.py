@@ -3,8 +3,7 @@ import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 import seaborn as sns
-from torch.amp.autocast_mode import autocast
-from torch.amp.grad_scaler import GradScaler
+from torch.cuda.amp import autocast, GradScaler
 from torch.optim import Adam
 
 import config
@@ -17,14 +16,15 @@ def train_model(model : nn.Module):
         weight_decay=config.WEIGHT_DECAY
         )
     
-    criterion = nn.MSELoss()
+    criterion = nn.CrossEntropyLoss()
 
-    scaler = GradScaler('cuda')
+    scaler = GradScaler()
 
     best_val_loss = float('inf')
     all_train_losses = []
     all_val_losses = []
 
+    print('Training started...')
     for epoch in range(config.EPOCHS):
         model.train()
         train_loss = 0.0
@@ -35,7 +35,7 @@ def train_model(model : nn.Module):
 
             optimizer.zero_grad()
 
-            with autocast('cuda'):
+            with autocast():
                 preds = model(x)
                 loss = criterion(preds.view(-1), y.view(-1))
 
