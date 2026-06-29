@@ -12,11 +12,10 @@ from data.prepare_data import train_loader, val_loader
 def train_model(model : nn.Module):
     optimizer = Adam(
         model.parameters(), 
-        lr=config.LEARNING_RATE,
-        weight_decay=config.WEIGHT_DECAY
+        lr=config.LEARNING_RATE
         )
     
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.BCEWithLogitsLoss()
 
     scaler = GradScaler()
 
@@ -37,7 +36,7 @@ def train_model(model : nn.Module):
 
             with autocast():
                 preds = model(x)
-                loss = criterion(preds.view(-1), y.view(-1))
+                loss = criterion(preds.squeeze(1), y)
 
             scaler.scale(loss).backward()
             scaler.step(optimizer)
@@ -58,7 +57,7 @@ def train_model(model : nn.Module):
 
                 preds = model(x)
 
-                loss = criterion(preds.view(-1), y.view(-1))
+                loss = criterion(preds.squeeze(1), y)
 
                 val_loss += loss.item()
 
